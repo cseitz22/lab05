@@ -112,23 +112,121 @@ dn_lq_ak_mindist <- dn_lq_ak %>%
 For each Denny's location in Alaska, there is a La Quinta within 6 kilometers. 
 
 ```{r visualization}
-dn_lq_ak %>%
-  ggplot (aes(x=1:nrow(dn_lq_ak), 
-              y=distance, 
-              color=address.x))+
-  geom_point()
+dn_lq_ak_mindist %>%
+  ggplot (aes(x=closest))+
+  geom_histogram(binwidth = 3)
 
 ```
 
 
 ### Exercise 9 - North Carolina
 
+```{r filter_NC}
+
+#filter dennys
+dn_nc <- dn %>%
+  filter(state == "NC")
+
+#filter la quinta
+lq_nc <- lq %>%
+  filter(state == "NC")
+
+#join data frames
+dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
+
+#calculate distance
+dn_lq_nc$distance <-
+  haversine(dn_lq_nc$longitude.x,
+            dn_lq_nc$latitude.x,
+            dn_lq_nc$longitude.y,
+            dn_lq_nc$latitude.y,
+            3)
+
+#find minimum distance
+dn_lq_nc_mindist <- dn_lq_nc %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+
+#plot histogram
+dn_lq_nc_mindist %>%
+  ggplot (aes(x=closest))+
+  geom_histogram(binwidth = 10)
+
+```
+
+
+
+
 
 ### Exercise 10 - Texas
 
+```{r filter_tx}
+
+#filter dennys
+dn_tx <- dn %>%
+  filter(state == "TX")
+
+#filter la quinta
+lq_tx <- lq %>%
+  filter(state == "TX")
+
+#join data frames
+dn_lq_tx <- full_join(dn_tx, lq_tx, by = "state")
+
+#calculate distance
+dn_lq_tx$distance <-
+  haversine(dn_lq_tx$longitude.x,
+            dn_lq_tx$latitude.x,
+            dn_lq_tx$longitude.y,
+            dn_lq_tx$latitude.y,
+            3)
+
+#find minimum distance
+dn_lq_tx_mindist <- dn_lq_tx %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+
+#plot histogram
+dn_lq_tx_mindist %>%
+  ggplot (aes(x=closest))+
+  geom_histogram(binwidth = 5)
+
+```
 
 ### Exercise 11 - California
 
+```{r filter_CA}
+
+#filter dennys
+dn_ca <- dn %>%
+  filter(state == "CA")
+
+#filter la quinta
+lq_ca <- lq %>%
+  filter(state == "CA")
+
+#join data frames
+dn_lq_ca <- full_join(dn_ca, lq_ca, by = "state")
+
+#calculate distance
+dn_lq_ca$distance <-
+  haversine(dn_lq_ca$longitude.x,
+            dn_lq_ca$latitude.x,
+            dn_lq_ca$longitude.y,
+            dn_lq_ca$latitude.y,
+            3)
+
+#find minimum distance
+dn_lq_ca_mindist <- dn_lq_ca %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+
+#plot histogram
+dn_lq_ca_mindist %>%
+  ggplot (aes(x=closest))+
+  geom_histogram(binwidth = 10)
+
+```
 
 ### Exercise 12
 
