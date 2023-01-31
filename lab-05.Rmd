@@ -107,21 +107,35 @@ dn_lq_ak_mindist <- dn_lq_ak %>%
 
 ```
 
-### Exercise 8
+### Exercise 8 - Alaska
 
 For each Denny's location in Alaska, there is a La Quinta within 6 kilometers. 
 
 ```{r visualization}
 dn_lq_ak_mindist %>%
   ggplot (aes(x=closest))+
-  geom_histogram(binwidth = 3)
+  geom_histogram(binwidth = 3)+
+  labs(title = "Minimum Distance between Denny's and the Closest La Quinta",
+       subtitle = "in Alaska",
+       x="Minimum distance between La Quinta's and Denny's in kilometers",
+       y="Number of locations")
 
 ```
 
+```{r stats_ak}
+
+dn_lq_ak_mindist %>% 
+  summarize(meandist=mean(closest),
+            stddist=sd(closest),
+            mindist=min(closest),
+            maxdist=max(closest)
+          )
+
+```
 
 ### Exercise 9 - North Carolina
 
-```{r filter_NC}
+```{r visualize_NC}
 
 #filter dennys
 dn_nc <- dn %>%
@@ -150,17 +164,30 @@ dn_lq_nc_mindist <- dn_lq_nc %>%
 #plot histogram
 dn_lq_nc_mindist %>%
   ggplot (aes(x=closest))+
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 10)+
+  labs(title = "Minimum Distance between Denny's and the Closest La Quinta",
+       subtitle = "in North Carolina",
+       x="Minimum distance between La Quinta's and Denny's in kilometers",
+       y="Number of locations")
 
 ```
 
 
+```{r stats_nc}
 
+dn_lq_nc_mindist %>% 
+  summarize(meandist=mean(closest),
+            stddist=sd(closest),
+            mindist=min(closest),
+            maxdist=max(closest)
+          )
+
+```
 
 
 ### Exercise 10 - Texas
 
-```{r filter_tx}
+```{r visualize_tx}
 
 #filter dennys
 dn_tx <- dn %>%
@@ -189,13 +216,29 @@ dn_lq_tx_mindist <- dn_lq_tx %>%
 #plot histogram
 dn_lq_tx_mindist %>%
   ggplot (aes(x=closest))+
-  geom_histogram(binwidth = 5)
+  geom_histogram(binwidth = 5)+
+  labs(title = "Minimum Distance between Denny's and the Closest La Quinta",
+       subtitle = "in Texas",
+       x="Minimum distance between La Quinta's and Denny's in kilometers",
+       y="Number of locations")
+
+```
+
+
+```{r stats_tx}
+
+dn_lq_tx_mindist %>% 
+  summarize(meandist=mean(closest),
+            stddist=sd(closest),
+            mindist=min(closest),
+            maxdist=max(closest)
+          )
 
 ```
 
 ### Exercise 11 - California
 
-```{r filter_CA}
+```{r visualize_CA}
 
 #filter dennys
 dn_ca <- dn %>%
@@ -224,20 +267,66 @@ dn_lq_ca_mindist <- dn_lq_ca %>%
 #plot histogram
 dn_lq_ca_mindist %>%
   ggplot (aes(x=closest))+
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 10)+
+  labs(title = "Minimum Distance between Denny's and the Closest La Quinta",
+       subtitle = "in California",
+       x="Minimum distance between La Quinta's and Denny's in kilometers",
+       y="Number of locations")
 
 ```
+
+
+
+```{r stats_ca}
+
+dn_lq_ca_mindist %>% 
+  summarize(meandist=mean(closest),
+            stddist=sd(closest),
+            mindist=min(closest),
+            maxdist=max(closest)
+          )
+
+```
+
+
 
 ### Exercise 12
 
 
+```{r add_state_columns}
 
+dn_lq_ak_mindist<-dn_lq_ak_mindist %>%
+  mutate(state="AK")
+dn_lq_ca_mindist<-dn_lq_ca_mindist %>%
+  mutate(state="CA")
+dn_lq_nc_mindist<-dn_lq_nc_mindist %>%
+  mutate(state="NC")
+dn_lq_tx_mindist<-dn_lq_tx_mindist %>%
+  mutate(state="TX")
 
+```
 
+```{r bind_min_df}
 
+dn_lq_states <- rbind(dn_lq_ak_mindist, dn_lq_ca_mindist)
+df<- rbind(dn_lq_nc_mindist, dn_lq_tx_mindist)
 
+dn_lq_states <- rbind(df, dn_lq_states)
+```
 
+```{r graph_it}
 
+ggplot(dn_lq_states, aes(x=closest, color=state, fill=state)) +
+  geom_histogram(alpha=0.5, position="dodge", binwidth=3)+
+  facet_grid(state ~ .)+
+  labs(title = "Minimum Distance between Denny's and the Closest La Quinta",
+       subtitle = "in 4 Different States",
+       x="Minimum distance between La Quinta's and Denny's in kilometers",
+       y="Number of locations")
+
+```
+
+In addition to Alaska, Texas, and North Carolina, I examined the minimum distances between Denny's and La Quinta's in California. The joke seems to best hold true for Texas, as is shown in the last figure. Texas tied with California for the smallest distance between the 2 establishments, but Texas' maximum distance was only 60 kilometers while California's was around 250 kilometers. In addition, Texas had, by far, the most Denny's locations at very close range to La Quinta's, while other states had more variability (excluding Alaska). One could argue the joke best hold true for Alaska, but given the small sample size, it is unreliable. 
 
 
 
