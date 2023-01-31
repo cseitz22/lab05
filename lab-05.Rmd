@@ -96,4 +96,55 @@ dn_lq_ak$distance <-
 
 ```
 
-Add exercise headings as needed.
+
+### Exercise 7
+
+```{r minimum_distance}
+
+dn_lq_ak_mindist <- dn_lq_ak %>%
+  group_by(address.x) %>%
+  summarize(closest = min(distance))
+
+```
+
+### Exercise 8
+
+For each Denny's location in Alaska, there is a La Quinta within 6 kilometers. 
+
+```{r visualization}
+dn_lq_ak %>%
+  ggplot (aes(x=1:nrow(dn_lq_ak), 
+              y=distance, 
+              color=address.x))+
+  geom_point()
+
+```
+
+
+### Exercise 9 - North Carolina
+
+
+### Exercise 10 - Texas
+
+
+### Exercise 11 - California
+
+
+### Exercise 12
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
